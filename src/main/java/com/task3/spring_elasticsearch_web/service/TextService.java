@@ -16,8 +16,7 @@ public class TextService {
         this.repository = repository;
     }
 
-    public void addToElasticsearch(String text) {
-
+    public void addToElasticsearchByFieldText(String text) {
         Text text1 = new Text(text);
         repository.save(text1);
     }
@@ -27,4 +26,17 @@ public class TextService {
         return text;
     }
 
+    public Iterable<Text> getAllTexts() {
+        Iterable<Text> texts = repository.findAll();
+        return texts;
+    }
+
+    public Text addToElasticsearch(Text text) {
+        repository.save(text);
+        return text;
+    }
+
+    public void deleteFromElasticsearchById(String id){
+        repository.deleteById(id);
+    }
 }
