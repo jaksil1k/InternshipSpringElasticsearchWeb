@@ -1,10 +1,13 @@
-package com.task3.spring_elasticsearch_web.service;
+package com.task4.spring_elasticsearch_web.service;
 
 
-import com.task3.spring_elasticsearch_web.entity.Text;
-import com.task3.spring_elasticsearch_web.repository.TextRepository;
+import com.task4.spring_elasticsearch_web.entity.Text;
+import com.task4.spring_elasticsearch_web.repository.TextRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class TextService {
@@ -17,7 +20,7 @@ public class TextService {
     }
 
     public void addToElasticsearchByFieldText(String text) {
-        Text text1 = new Text(text);
+        Text text1 = new Text(text, new Date());
         repository.save(text1);
     }
 
@@ -38,5 +41,9 @@ public class TextService {
 
     public void deleteFromElasticsearchById(String id){
         repository.deleteById(id);
+    }
+
+    public Optional<Text> getTextById(String id) {
+        return repository.findById(id);
     }
 }

@@ -1,4 +1,4 @@
-package com.task3.spring_elasticsearch_web;
+package com.task4.spring_elasticsearch_web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

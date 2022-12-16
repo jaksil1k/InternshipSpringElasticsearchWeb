@@ -1,4 +1,4 @@
-package com.task3.spring_elasticsearch_web.config;
+package com.task4.spring_elasticsearch_web.config;
 
 
 import org.elasticsearch.client.RestHighLevelClient;
@@ -12,8 +12,8 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 @Configuration
 @EnableElasticsearchRepositories(basePackages
-        = "com.task3.spring_elasticsearch_web.repository")
-@ComponentScan(basePackages = { "com.task3.spring_elasticsearch_web" })
+        = "com.task4.spring_elasticsearch_web.repository")
+@ComponentScan(basePackages = {"com.task4.spring_elasticsearch_web"})
 public class Config extends
         AbstractElasticsearchConfiguration {
     @Override
