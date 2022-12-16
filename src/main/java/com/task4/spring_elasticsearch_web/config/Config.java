@@ -9,13 +9,15 @@ import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableElasticsearchRepositories(basePackages
         = "com.task4.spring_elasticsearch_web.repository")
 @ComponentScan(basePackages = {"com.task4.spring_elasticsearch_web"})
 public class Config extends
-        AbstractElasticsearchConfiguration {
+        AbstractElasticsearchConfiguration{
     @Override
     @Bean
     public RestHighLevelClient elasticsearchClient() {

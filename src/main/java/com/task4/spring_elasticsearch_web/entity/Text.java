@@ -4,11 +4,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 @Document(indexName = "text")
+@Setting(settingPath = "static/es-settings.json")
 public class Text {
     @Id
     @Field(type = FieldType.Keyword)

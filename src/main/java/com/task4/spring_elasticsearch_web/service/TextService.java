@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 public class TextService {
@@ -43,7 +42,7 @@ public class TextService {
         repository.deleteById(id);
     }
 
-    public Optional<Text> getTextById(String id) {
-        return repository.findById(id);
+    public Text getTextById(String id) {
+        return repository.findById(id).orElse(null);
     }
 }

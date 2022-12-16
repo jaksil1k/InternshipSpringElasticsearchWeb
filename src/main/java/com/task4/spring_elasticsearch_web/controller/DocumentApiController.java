@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/documents")
@@ -21,7 +20,7 @@ public class DocumentApiController {
         return texts;
     }
 
-    @PostMapping("/")
+    @PostMapping
     public Text addNewText(@RequestBody Text text) {
         text.setDate(new Date());
         Text result = textService.addToElasticsearch(text);
@@ -34,8 +33,8 @@ public class DocumentApiController {
         return "Text with ID=" + id +" was successfully deleted";
     }
 
-    @GetMapping("/{id}")
-    public Optional<Text> getTextById(@PathVariable String id) {
-        return textService.getTextById(id);
-    }
+//    @GetMapping("/{id}")
+//    public Text getTextById(@PathVariable String id) {
+//        return textService.getTextById(id);
+//    }
 }
