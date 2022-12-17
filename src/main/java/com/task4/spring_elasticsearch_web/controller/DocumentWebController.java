@@ -1,14 +1,19 @@
 package com.task4.spring_elasticsearch_web.controller;
 
 import com.task4.spring_elasticsearch_web.entity.Text;
+import com.task4.spring_elasticsearch_web.search.SearchRequestDTO;
 import com.task4.spring_elasticsearch_web.service.TextService;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/documents")
@@ -36,6 +41,21 @@ public class DocumentWebController {
         Text text = new Text();
         model.addAttribute("text", text);
         return "find-text";
+    }
+
+    @RequestMapping("/all")
+    public String showAll(Model model
+            , @RequestParam(value = "sortField", defaultValue = "id") String sortBy
+            , @RequestParam(value = "order", defaultValue = "ASC") SortOrder order
+            , @RequestParam(value = "page", defaultValue = "0") int page
+            , @RequestParam(value = "size", defaultValue = "3") int size) {
+        if (page < 0){
+            page = 0;
+        }
+        List<Text> texts = textService.search(new SearchRequestDTO(sortBy, order, page, size));
+        Page<Text> textPage = new PageImpl<>(texts, PageRequest.of(page, size), texts.size());
+        model.addAttribute("texts", textPage);
+        return "all";
     }
 
 //    @PostMapping("/find")

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>all documents</title>
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <th th:text="id"/>
+            <th th:text="text"/>
+            <th th:text="created"/>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="text, iStat : ${texts.content}">
+            <td th:text="${text.id}"/>
+            <td th:text="${text.text}"/>
+            <td th:text="${text.date}"/>
+        </tr>
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation template">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" th:href="@{/documents/all(page=${texts.number - 1})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <li class="page-item">
+            <a class="page-link" th:href="@{/documents/all(page=${texts.number + 1})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-item" th:href="@{/documents/all(page=${texts.number}, sortBy=text, order=ASC)}">
+                sortBy text ASC
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-item" th:href="@{/documents/all(page=${texts.number}, sortBy=text, order=DESC)}">
+                sortBy text DESC
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-item" th:href="@{/documents/all(page=${texts.number}, sortField=date, order=ASC)}">
+                sortBy text ASC
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-item" th:href="@{/documents/all(page=${texts.number}, sortField=date, order=DESC)}">
+                sortBy text ASC
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>

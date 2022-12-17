@@ -18,7 +18,8 @@ public class DocumentApiController {
 
     @GetMapping
     public List<Text> getAllDocuments(@RequestBody SearchRequestDTO dto) {
-        return textService.search(dto);
+        List<Text> texts = textService.search(dto);
+        return texts;
     }
 
     @PostMapping
