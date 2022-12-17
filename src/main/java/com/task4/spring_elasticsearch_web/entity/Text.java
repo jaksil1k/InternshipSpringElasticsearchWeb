@@ -1,5 +1,6 @@
 package com.task4.spring_elasticsearch_web.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -8,17 +9,13 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 
 import java.util.Date;
 
-@Document(indexName = "text")
-@Setting(settingPath = "static/es-settings.json")
+
 public class Text {
-    @Id
-    @Field(type = FieldType.Keyword)
     private String id;
 
-    @Field(type = FieldType.Text)
     private String text;
 
-    @Field(type = FieldType.Date)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     public Text(String text, Date date) {
