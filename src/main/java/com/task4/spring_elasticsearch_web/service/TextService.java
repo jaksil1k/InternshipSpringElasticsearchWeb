@@ -7,6 +7,8 @@ import com.task4.spring_elasticsearch_web.helper.Indices;
 import com.task4.spring_elasticsearch_web.repository.TextRepository;
 import com.task4.spring_elasticsearch_web.search.SearchRequestDTO;
 import com.task4.spring_elasticsearch_web.search.util.SearchUtil;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -23,19 +25,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
 public class TextService {
 
-    private final TextRepository repository;
+    //Autowired
+//    private final TextRepository repository;
     private final RestHighLevelClient client;
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final Logger LOG = LoggerFactory.getLogger(TextService.class);
 
     @Autowired
-    public TextService(TextRepository repository, RestHighLevelClient client) {
-        this.repository = repository;
+    public TextService(RestHighLevelClient client) {
         this.client = client;
     }
 
@@ -73,33 +76,48 @@ public class TextService {
         }
     }
 
-    public void addToElasticsearchByFieldText(String text) {
-        Text text1 = new Text(text, new Date());
-        repository.save(text1);
+    //Repository is not working
+//    public void addToElasticsearchByFieldText(String text) {
+//        Text text1 = new Text(text, new Date());
+//        repository.save(text1);
+//    }
+//
+//    public Text searchInElasticsearch(String s) {
+//        Text text = repository.findTextByText(s);
+//        return text;
+//    }
+//
+//    public Iterable<Text> getAllTexts() {
+//        Iterable<Text> texts = repository.findAll();
+//        return texts;
+//    }
+//
+//    public Text addToElasticsearch(Text text) {
+//        repository.save(text);
+//        return text;
+//    }
+
+public boolean deleteTextById(String id){
+
+        try {
+            DeleteRequest request = new DeleteRequest(
+                    Indices.TEXT_INDEX,
+                    id
+            );
+
+            DeleteResponse response = client.delete(
+                    request, RequestOptions.DEFAULT);
+            return response != null && response.status().equals(RestStatus.OK);
+
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+            return false;
+        }
     }
 
-    public Text searchInElasticsearch(String s) {
-        Text text = repository.findTextByText(s);
-        return text;
-    }
-
-    public Iterable<Text> getAllTexts() {
-        Iterable<Text> texts = repository.findAll();
-        return texts;
-    }
-
-    public Text addToElasticsearch(Text text) {
-        repository.save(text);
-        return text;
-    }
-
-    public void deleteFromElasticsearchById(String id){
-        repository.deleteById(id);
-    }
-
-    public Text getTextById(String id) {
-        return repository.findById(id).orElse(null);
-    }
+//    public Text getTextById(String id) {
+//        return repository.findById(id).orElse(null);
+//    }
 
     public List<Text> search(final SearchRequestDTO dto) {
         final SearchRequest request = SearchUtil.buildSearchRequest(

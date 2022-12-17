@@ -15,7 +15,7 @@ public class Text {
 
     private String text;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     public Text(String text, Date date) {

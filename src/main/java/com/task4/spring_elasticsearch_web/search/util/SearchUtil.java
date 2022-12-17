@@ -8,6 +8,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.search.MultiMatchQuery;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -19,8 +20,15 @@ public final class SearchUtil {
     public static SearchRequest buildSearchRequest(final String indexName,
                                                    final SearchRequestDTO dto) {
         try {
-            final SearchSourceBuilder builder = new SearchSourceBuilder()
+            SearchSourceBuilder builder = new SearchSourceBuilder()
                     .postFilter(getQueryBuilder(dto));
+
+            if (dto.getSortBy() != null) {
+                builder = builder.sort(
+                        dto.getSortBy(),
+                        dto.getOrder() != null ? dto.getOrder() : SortOrder.ASC
+                );
+            }
 
             SearchRequest request = new SearchRequest(indexName);
             request.source(builder);

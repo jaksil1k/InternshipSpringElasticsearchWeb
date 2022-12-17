@@ -1,11 +1,13 @@
 package com.task4.spring_elasticsearch_web.controller;
 
 import com.task4.spring_elasticsearch_web.entity.Text;
+import com.task4.spring_elasticsearch_web.search.SearchRequestDTO;
 import com.task4.spring_elasticsearch_web.service.TextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/documents")
@@ -14,27 +16,31 @@ public class DocumentApiController {
     @Autowired
     private TextService textService;
 
-    @GetMapping("/")
-    public Iterable<Text> getAllDocuments() {
-        Iterable<Text> texts = textService.getAllTexts();
-        return texts;
+    @GetMapping
+    public List<Text> getAllDocuments(@RequestBody SearchRequestDTO dto) {
+        return textService.search(dto);
     }
 
     @PostMapping
-    public Text addNewText(@RequestBody Text text) {
+    public boolean addNewText(@RequestBody Text text) {
         text.setDate(new Date());
-        Text result = textService.addToElasticsearch(text);
+        boolean result = textService.index(text);
         return result;
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTextById(@PathVariable String id){
-        textService.deleteFromElasticsearchById(id);
-        return "Text with ID=" + id +" was successfully deleted";
+    public boolean deleteTextById(@PathVariable String id){
+        return textService.deleteTextById(id);
+
     }
 
-//    @GetMapping("/{id}")
-//    public Text getTextById(@PathVariable String id) {
-//        return textService.getTextById(id);
-//    }
+    @GetMapping("/{id}")
+    public Text getTextById(@PathVariable String id) {
+        return textService.getById(id);
+    }
+
+    @PostMapping("/search")
+    public List<Text> search(@RequestBody final SearchRequestDTO dto) {
+        return textService.search(dto);
+    }
 }

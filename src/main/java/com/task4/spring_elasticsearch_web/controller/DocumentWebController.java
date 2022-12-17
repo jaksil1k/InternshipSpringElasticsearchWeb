@@ -25,11 +25,11 @@ public class DocumentWebController {
         return "create-text";
     }
 
-    @PostMapping("/create")
-    public String saveText(@ModelAttribute("text") Text text){
-        textService.addToElasticsearch(text);
-        return"redirect:/all";
-    }
+//    @PostMapping("/create")
+//    public String saveText(@ModelAttribute("text") Text text){
+//        textService.addToElasticsearch(text);
+//        return "redirect:/all";
+//    }
 
     @GetMapping("/find")
     public String findText(Model model) {
