@@ -1,6 +1,9 @@
 package com.task4.spring_elasticsearch_web.config;
 
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -30,4 +33,19 @@ public class Config extends
 
         return RestClients.create(clientConfiguration).rest();
     }
+
+    //this mehtod not worked
+//    @Bean
+//    public OpenAPI openAPI() {
+//        Contact contact = new Contact()
+//                .email("nartai53@gmail.com")
+//                .name("Zhaksylyk");
+//        Info info = new Info()
+//                .title("DocumentApi")
+//                .version("v1.0")
+//                .contact(contact);
+//
+//        return new OpenAPI()
+//                .info(info);
+//    }
 }
