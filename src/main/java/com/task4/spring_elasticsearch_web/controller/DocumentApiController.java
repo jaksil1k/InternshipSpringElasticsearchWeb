@@ -24,31 +24,32 @@ public class DocumentApiController {
     private TextService textService;
 
     @GetMapping
-    @Operation(summary = "Method were you can get all texts")
+    @Operation(summary = "get all texts")
     public List<TextDto> getAllDocuments(
-            @Parameter(description = "you can send orderBy, sortField, page, size parameters")
-            @RequestBody
-            SearchRequestDTO dto) {
+            @Parameter(description = "can send with orderBy, sortField, page and size parameters")
+            @RequestBody SearchRequestDTO dto) {
         List<Text> texts = textService.search(dto);
         return TextMapper.MAPPER.toDto(texts);
     }
 
     @PostMapping
-    @Operation(summary = "Method were you can add text")
-    public boolean addNewText(@RequestBody Text text) {
+    @Operation(summary = "add text")
+    public boolean addNewText(
+            @Parameter(description = "can send id, text, date. But shouldn't send date, because in any case will be current date in system")
+            @RequestBody Text text) {
         text.setDate(new Date());
         return textService.index(text);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Method were you can delete text by id")
+    @Operation(summary = "delete text by id")
     public boolean deleteTextById(@PathVariable String id){
         return textService.deleteTextById(id);
 
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Method were you can find text by id")
+    @Operation(summary = "find text by id")
     public TextDto getTextById(@PathVariable String id) {
         Text text = textService.getById(id);
         return TextMapper.MAPPER.toDto(text);
