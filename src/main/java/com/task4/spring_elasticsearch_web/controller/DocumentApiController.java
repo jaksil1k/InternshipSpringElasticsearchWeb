@@ -3,15 +3,22 @@ package com.task4.spring_elasticsearch_web.controller;
 import com.task4.spring_elasticsearch_web.dto.TextDto;
 import com.task4.spring_elasticsearch_web.entity.Text;
 import com.task4.spring_elasticsearch_web.mapper.TextMapper;
-import com.task4.spring_elasticsearch_web.mapper.TextMapperImpl;
 import com.task4.spring_elasticsearch_web.search.SearchRequestDTO;
 import com.task4.spring_elasticsearch_web.service.TextService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.xml.sax.SAXException;
 
+
+import java.io.FileNotFoundException;
+import java.io.StringReader;
 import java.util.Date;
 import java.util.List;
 
@@ -55,8 +62,9 @@ public class DocumentApiController {
         return TextMapper.MAPPER.toDto(text);
     }
 
-//    @PostMapping("/search")
-//    public List<Text> search(@RequestBody final SearchRequestDTO dto) {
-//        return textService.search(dto);
-//    }
+    @PostMapping(value = "/search", consumes = {MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE})
+    public String search(@RequestBody String xmlSearchRequest /*final SearchRequestDTO dto*/) throws JAXBException, SAXException, FileNotFoundException {
+
+        return textService.searchWithXml(xmlSearchRequest);
+    }
 }

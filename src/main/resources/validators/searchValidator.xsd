@@ -1,0 +1,21 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="search">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="fields" type="fields" minOccurs="0"/>
+                <xs:element name="searchTerm" type="xs:string" minOccurs="0"/>
+                <xs:element name="sortBy" type="xs:string" minOccurs="0" nillable="true"/>
+                <xs:element name="order" type="xs:string" minOccurs="0" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="fields">
+        <xs:list itemType="xs:string"/>
+    </xs:simpleType>
+<!--    <xs:complexType name="fields">-->
+<!--        <xs:sequence>-->
+<!--            <xs:element name="field" type="xs:string" minOccurs="0"/>-->
+<!--        </xs:sequence>-->
+<!--    </xs:complexType>-->
+</xs:schema>

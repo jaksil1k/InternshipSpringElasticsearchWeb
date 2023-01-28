@@ -2,11 +2,17 @@ package com.task4.spring_elasticsearch_web.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.task4.spring_elasticsearch_web.entity.JaxbList;
 import com.task4.spring_elasticsearch_web.entity.Text;
 import com.task4.spring_elasticsearch_web.helper.Indices;
 import com.task4.spring_elasticsearch_web.repository.TextRepository;
 import com.task4.spring_elasticsearch_web.search.SearchRequestDTO;
 import com.task4.spring_elasticsearch_web.search.util.SearchUtil;
+import com.task4.spring_elasticsearch_web.service.util.XmlMarshalUtil;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
+import org.apache.coyote.Response;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequest;
@@ -24,8 +30,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.xml.sax.SAXException;
 
+import javax.xml.validation.Schema;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.*;
 
 @Service
@@ -145,5 +155,22 @@ public boolean deleteTextById(String id){
             LOG.error(e.getMessage(), e);
             return Collections.emptyList();
         }
+    }
+
+    public String searchWithXml(String xmlSearchRequest) throws FileNotFoundException, JAXBException {
+
+
+        SearchRequestDTO requestDTO = null;
+        try {
+            requestDTO = XmlMarshalUtil.unmarshall(xmlSearchRequest);
+        } catch (JAXBException | SAXException e) {
+            return "<error>" + "bad request" + "</error>";
+        }
+        requestDTO.setFields(List.of(requestDTO.getFields2()));
+//        System.out.println(requestDTO.getFields());
+//        System.out.println(requestDTO.getSearchTerm());
+        List<Text> texts = search(requestDTO);
+//        System.out.println(texts.size());
+        return XmlMarshalUtil.marshal(new JaxbList(texts));
     }
 }

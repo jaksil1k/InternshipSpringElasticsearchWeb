@@ -5,9 +5,7 @@ import com.task4.spring_elasticsearch_web.search.SearchRequestDTO;
 import com.task4.spring_elasticsearch_web.service.TextService;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +52,9 @@ public class DocumentWebController {
         }
         List<Text> texts = textService.search(new SearchRequestDTO(sortBy, order, page, size));
         Page<Text> textPage = new PageImpl<>(texts, PageRequest.of(page, size), texts.size());
+        /*Pageable pageable = ((order.toString().equals("ASC")
+                ? PageRequest.of(page, size, Sort.by(sortBy).ascending())
+                : PageRequest.of(page, size, Sort.by(sortBy).descending())));*/
         model.addAttribute("texts", textPage);
         return "all";
     }
