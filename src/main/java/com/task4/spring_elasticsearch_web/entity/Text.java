@@ -19,6 +19,12 @@ public class Text {
         this.date = date;
     }
 
+    public Text(String id, String text, Date date) {
+        this.id = id;
+        this.text = text;
+        this.date = date;
+    }
+
     public Text() {
 
     }
