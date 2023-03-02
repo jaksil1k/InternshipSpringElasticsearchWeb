@@ -16,6 +16,13 @@ public class TextDto {
     @Schema(description = "the date when it was created")
     private Date date;
 
+    public TextDto(String body) {
+        this.body = body;
+    }
+
+    public TextDto() {
+    }
+
     public String getId() {
         return id;
     }

@@ -19,6 +19,10 @@ public class Text {
         this.date = date;
     }
 
+    public Text(String text) {
+        this.text = text;
+    }
+
     public Text(String id, String text, Date date) {
         this.id = id;
         this.text = text;
