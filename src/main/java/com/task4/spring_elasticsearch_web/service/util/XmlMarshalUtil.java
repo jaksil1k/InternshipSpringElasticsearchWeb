@@ -1,12 +1,10 @@
 package com.task4.spring_elasticsearch_web.service.util;
 
 
-import com.task4.spring_elasticsearch_web.entity.JaxbList;
-import com.task4.spring_elasticsearch_web.entity.Text;
+import com.task4.spring_elasticsearch_web.dto.JaxbList;
 import com.task4.spring_elasticsearch_web.search.SearchRequestDTO;
 import com.task4.spring_elasticsearch_web.validator.SearchEventHandler;
 import jakarta.xml.bind.*;
-import org.apache.maven.model.building.StringModelSource;
 import org.springframework.util.ResourceUtils;
 import org.xml.sax.SAXException;
 
@@ -17,8 +15,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.List;
-import java.util.Objects;
 
 public class XmlMarshalUtil {
 

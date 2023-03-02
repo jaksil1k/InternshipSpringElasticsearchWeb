@@ -1,11 +1,13 @@
 package com.task4.spring_elasticsearch_web.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 
 import java.util.Date;
 
 @Schema(description = "Information about text")
+@XmlRootElement
 public class TextDto {
 
     @Schema(description = "Id of text")

@@ -41,9 +41,11 @@ public class DocumentApiController {
     @PostMapping
     @Operation(summary = "add text")
     public TextDto addNewText(
-            @Parameter(description = "can send id, text, date. But shouldn't send date, because in any case will be current date in system")
+            @Parameter(description = "can send id, text, date. If no date send, then date will be now")
             @RequestBody Text text) throws IOException {
-        text.setDate(new Date());
+        if (text.getDate() == null) {
+            text.setDate(new Date());
+        }
         Optional<Text> optionalText = textService.index(text);
         if (optionalText.isEmpty()) {
             return new TextDto("something went wrong, please try again later");
@@ -54,7 +56,7 @@ public class DocumentApiController {
     @DeleteMapping("/{id}")
     @Operation(summary = "delete text by id")
     public boolean deleteTextById(@PathVariable String id){
-        return textService.deleteTextById(id);
+        return textService.deleteById(id);
 
     }
 
@@ -66,7 +68,7 @@ public class DocumentApiController {
     }
 
     @PostMapping(value = "/search", consumes = {MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE})
-    public String search(@RequestBody String xmlSearchRequest /*final SearchRequestDTO dto*/) throws JAXBException, SAXException, FileNotFoundException {
+    public String searchWithXml(@RequestBody String xmlSearchRequest /*final SearchRequestDTO dto*/) throws JAXBException, FileNotFoundException {
 
         return textService.searchWithXml(xmlSearchRequest);
     }

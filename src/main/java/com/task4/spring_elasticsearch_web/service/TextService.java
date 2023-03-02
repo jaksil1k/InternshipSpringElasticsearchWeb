@@ -3,24 +3,20 @@ package com.task4.spring_elasticsearch_web.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.task4.spring_elasticsearch_web.dao.TextDao;
-import com.task4.spring_elasticsearch_web.entity.JaxbList;
+import com.task4.spring_elasticsearch_web.dto.TextDto;
+import com.task4.spring_elasticsearch_web.dto.JaxbList;
 import com.task4.spring_elasticsearch_web.entity.Text;
 import com.task4.spring_elasticsearch_web.helper.Indices;
+import com.task4.spring_elasticsearch_web.mapper.TextMapper;
 import com.task4.spring_elasticsearch_web.search.SearchRequestDTO;
-import com.task4.spring_elasticsearch_web.search.util.SearchUtil;
 import com.task4.spring_elasticsearch_web.service.util.XmlMarshalUtil;
 import jakarta.xml.bind.JAXBException;
-import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +59,9 @@ public class TextService {
 //            LOG.error(e.getMessage(), e);
 //            return false;
 //        }
+        if (text.getText() == null) {
+            return Optional.empty();
+        }
         final String textAsString = MAPPER.writeValueAsString(text);
 
         final IndexRequest request = new IndexRequest(Indices.TEXT_INDEX);
@@ -107,7 +106,7 @@ public class TextService {
 //        return text;
 //    }
 
-public boolean deleteTextById(String id){
+public boolean deleteById(String id){
         return textDao.deleteTextById(id);
 }
 
@@ -126,7 +125,8 @@ public boolean deleteTextById(String id){
         try {
             requestDTO = XmlMarshalUtil.unmarshall(xmlSearchRequest);
         } catch (JAXBException | SAXException e) {
-            return "<error>" + "bad request" + "</error>";
+//            throw e;
+            return "<error>bad request</error>";
         }
         requestDTO.setFields(List.of(requestDTO.getFields2()));
         for (String field :
@@ -138,7 +138,7 @@ public boolean deleteTextById(String id){
         }
 //        System.out.println(requestDTO.getFields());
 //        System.out.println(requestDTO.getSearchTerm());
-        List<Text> texts = textDao.search(requestDTO);
+        List<TextDto> texts = TextMapper.MAPPER.toDto(textDao.search(requestDTO));
 //        System.out.println(texts.size());
         return XmlMarshalUtil.marshal(new JaxbList(texts));
     }
