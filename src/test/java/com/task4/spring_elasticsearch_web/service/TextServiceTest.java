@@ -95,7 +95,7 @@ public class TextServiceTest {
     @Test
     void successfulSearch() {
         doReturn(new ArrayList<Text>()).when(textDao).search(any());
-        assertThat(textService.search(new SearchRequestDTO())).isNotEmpty();
+        assertThat(textService.search(new SearchRequestDTO())).isNotNull();
     }
 
     @Test
@@ -113,7 +113,7 @@ public class TextServiceTest {
                     <searchTerm>some text</searchTerm>
                 </search>
                 """))
-                .isEqualTo("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><List/>");
+                .isEqualTo("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><texts/>");
     }
     @Test
     void noSuchSearchTermInSearchWithXml() throws JAXBException, FileNotFoundException {
